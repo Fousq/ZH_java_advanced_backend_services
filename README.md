@@ -1,27 +1,28 @@
-# Spring Foundation Tasks
+# RPC Protocol and data formats
 
-## Task 1 - Spring Configuration
-### Create Basic Spring application which will have Data Source configuration provided by spring Configuration (2 points):
-* Introduce a configuration(using @Configuration) which should have a method annotated with @Bean which returns a configured data source instance.
-* Use https://mvnrepository.com/artifact/com.h2database/h2 as a Data Source.
-* Add test which tests your application by saving an entity to the data source(@DataJpaTest/@DataJdbcTest).
+## gRPC part (40 points)
+* Create a simple gRPC server application that listens on port 8080 for a request like this (feel free to add more fields) 
+<code>
+{      
+      "message": "Ping" 
+}
+</code>
+* And responses with something like this (feel free to add more fields)
+<code>
+ {     
+       "message": "Pong" 
+}
+</code>
+* Create a simple Java gRPC client application that sends a request to the simple server (share the same proto file), gets a response, and prints it.
+* Create a simple gRPC client application in any other language you like (or ask a trainer/lector for a Python example) that sends a request to the simple server, gets a response, and prints it. Use the same proto file.
+* Start a server and try to communicate with it using the clients you just wrote.
 
-## Task 2 - Conditional Configuration
-### Adjust existing configuration for Data Source based on conditional properties (2 points):
-* Custom Data Source should be optionally enabled or disabled based on a configuration property (@ConditionalOnProperty).
-* Enable the custom Data Source if the property is set to true or missing.
-* (Optional) Disable the custom Data Source and discover which Auto Configuration is responsible for creating a default Data source.
+## Avro part (60 points)
+In this task, you need to create a Kafka producer and consumer using Avro to serialize messages.
+* Create a simple Kafka producer that sends a simple message to a topic serializing it using Avro.
+* Create a simple Kafka consumer which listens to a topic for a message, deserializes the message, and prints it.
+* Start Kafka, create a topic, and run consumer and producer.
+* Try to use different Avro schemas for serialization and deserialization. Observe that schema version/id has changed e.g. in schema registry and kafka message payload(bytes 1-4).
 
-## Task 3 - Spring Profiles
-### Separate Data Source Configurations using Profiles (2 points):
-* Create a configuration files for two environments (local, dev).
-* Define database connection properties (url, username, password) in each file.
-* Create additional configuration file for test profile (under /test/java/resources folder).
-* Adjust test from the Task 1 to use Data Source configured from test configuration file(@DataJpaTest/@DataJdbcTest + @AutoConfigureTestDatabase(replace = NONE)).
 
-## Task 4 - Spring Actuator
-### Enable actuator by adding https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-actuator dependency. (1 point)
-* Expose Default Spring Actuator by configuring SecurityFilterChain/SecurityWebFilterChain bean. (1 point)
-* Check OOTB actuator endpoints (using /actuator).
-* Add a new custom actuator endpoint(using @Component and @Endpoint(id = ...)) to return active profile and current DB url. (2 points)
-* Only 2 endpoints (/health and custom endpoint above) should be exposed. Apply these changes for both environments (local and dev) by using a base configuration file.
+
